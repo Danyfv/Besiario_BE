@@ -11,12 +11,12 @@ def get_database(CONNECTION_STRING):
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
-get_database(app.config.get("ENVIRONMENT"))
+pprint(app.config.get("ENVIRONMENT"))
 db = get_database(app.config.get("DATABASE_URI"))
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>" + __name__
+    return "<p>Hello </p>" + __name__ + "  " + app.config.get("ENVIRONMENT")
 
 
 @app.route("/isAliveDB")
