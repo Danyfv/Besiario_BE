@@ -51,4 +51,4 @@ def convertiInJson(elemento):
     return json_data
 
 def getDb():
-    return sqlite3.connect('database.db')
+    return sqlite3.connect(app.config.get("DATABASE_URI"))
