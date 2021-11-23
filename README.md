@@ -13,3 +13,9 @@
 /home/Dany99f/mysite/flask_app.py
 
 Dany99f.pythonanywhere.com
+
+
+
+pip install flask
+pip install pymongo
+pip install python-dotenv
