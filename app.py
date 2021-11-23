@@ -11,6 +11,7 @@ def get_database(CONNECTION_STRING):
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
+get_database(app.config.get("ENVIRONMENT"))
 db = get_database(app.config.get("DATABASE_URI"))
 
 @app.route("/")
