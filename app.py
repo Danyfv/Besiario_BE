@@ -1,18 +1,15 @@
 from flask import Flask,jsonify,Response 
-from bson import json_util
-from pymongo import MongoClient
 from pprint import pprint
+from bson import json_util
+import sqlite3
 
-
-def get_database(CONNECTION_STRING):
-    client = MongoClient(CONNECTION_STRING, connect=False)
-    return client['Bestiario']
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
 
+app.config.from_pyfile('config.py')
 pprint(app.config.get("ENVIRONMENT"))
-db = get_database(app.config.get("DATABASE_URI"))
+
+
 
 @app.route("/")
 def hello_world():
@@ -21,32 +18,37 @@ def hello_world():
 
 @app.route("/isAliveDB")
 def isAliveDB():
-    serverStatusResult=db.command("serverStatus")
-    pprint(serverStatusResult)
     return "AA"
 
 
 @app.route("/get/<id>")
 def get(id):
-    ASingleReview = db.Mucca.find_one({'_id': id})
-    return convertiInJson(ASingleReview)
+    return "" + id
 
 
 @app.route("/getByName/<nome>")
 def getByName(nome):
-    mucca = db.Mucca.find_one({'nome': nome})
-    return convertiInJson(mucca)
+    db = getDb();
+    mucche = db.execute('select * from mucca').fetchall() 
+    db.close()
+    pprint(mucche)
+    return "aaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
 
 @app.route("/getMucche")
 def getMucche():
-    mucche = db.Mucca.find()
+    db = getDb();
+    mucche = db.execute('select * from mucca').fetchall() 
+    db.close()
+    pprint(mucche)
     return convertiInJson(mucche)
 
 
 
 def convertiInJson(elemento):
-    list_cur = list(elemento)
-    json_data = json_util.dumps(list_cur, indent = 2)
+    json_data = json_util.dumps(elemento, indent = 2)
     pprint(json_data)
     return json_data
+
+def getDb():
+    return sqlite3.connect('database.db')
