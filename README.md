@@ -7,3 +7,9 @@
 2) Attiva venv: venv\Scripts\activate
 3) set FLASK_APP=app
 4) flask run
+
+
+
+/home/Dany99f/mysite/flask_app.py
+
+Dany99f.pythonanywhere.com

@@ -5,13 +5,39 @@ from pprint import pprint
 
 app = Flask(__name__)
 
-client = MongoClient("mongodb://localhost:27017")
-db=client.Bestiario
+# connessioneDB = "mongodb://Bestie:BelleVacche01@bestiario.bku3d.mongodb.net"
+#"mongodb://Bestie:BelleVacche01@bestiario.bku3d.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+#if __name__ == "app_prod":
+    # connessioneDB = "mongodb://localhost:27017"
+
+#client = MongoClient(connessioneDB)
+#db=client.Bestiario
+
+
+def get_database():
+    CONNECTION_STRING = "mongodb://Bestie:BelleVacche01@bestiario-shard-00-00.bku3d.mongodb.net:27017,bestiario-shard-00-01.bku3d.mongodb.net:27017,bestiario-shard-00-02.bku3d.mongodb.net:27017/Bestiario?ssl=true&replicaSet=atlas-rph8gy-shard-0&authSource=admin&retryWrites=true&w=majority"
+    client = MongoClient(CONNECTION_STRING, connect=False)
+    return client['Bestiario']
+
+def get_local_database():
+    CONNECTION_STRING = "mongodb://localhost:27017"
+    client = MongoClient(CONNECTION_STRING)
+    return client['Bestiario']
+
+print("avvio:" + __name__)
+if __name__ == "app_prod":
+    db = get_database()
+else:
+    db = get_local_database()
+
+
+
+
 
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return "<p>Hello, World!</p>" + __name__
 
 
 @app.route("/isAliveDB")
