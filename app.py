@@ -2,9 +2,10 @@ from flask import Flask,jsonify,Response
 from pprint import pprint
 from bson import json_util
 import sqlite3
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 app.config.from_pyfile('config.py')
 pprint(app.config.get("ENVIRONMENT"))
@@ -29,10 +30,9 @@ def get(id):
 @app.route("/getByName/<nome>")
 def getByName(nome):
     db = getDb();
-    mucche = db.execute('select * from mucca').fetchall() 
+    mucca = db.execute("select * from mucca where nome = \'" + nome + "\'").fetchall() 
     db.close()
-    pprint(mucche)
-    return "aaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    return jsonify(mucca)
 
 
 @app.route("/getMucche")
@@ -40,8 +40,7 @@ def getMucche():
     db = getDb();
     mucche = db.execute('select * from mucca').fetchall() 
     db.close()
-    pprint(mucche)
-    return convertiInJson(mucche)
+    return jsonify(mucche)
 
 
 
