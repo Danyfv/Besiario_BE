@@ -17,6 +17,7 @@ Dany99f.pythonanywhere.com
 
 
 pip install flask
-pip install pymongo
+<!-- pip install pymongo -->
 pip install python-dotenv
 pip install -U flask-cors
+pip install APScheduler

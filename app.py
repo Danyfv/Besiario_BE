@@ -4,6 +4,9 @@ from bson import json_util
 import sqlite3
 from flask_cors import CORS
 
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
+
 app = Flask(__name__)
 CORS(app)
 
@@ -11,10 +14,22 @@ app.config.from_pyfile('config.py')
 pprint(app.config.get("ENVIRONMENT"))
 
 
+def controlloNotifiche():
+    pprint('NON CI SONO NOTIFICHE!!!')
+
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=controlloNotifiche, trigger="interval", seconds=5)
+scheduler.start()
+
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
+
+
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello </p>" + __name__ + "  " + app.config.get("ENVIRONMENT")
+    return "<p>Hello </p>" + __name__ + "  " + app.config.get("ENVIRONMENT") 
 
 
 @app.route("/isAliveDB")
@@ -51,3 +66,5 @@ def convertiInJson(elemento):
 
 def getDb():
     return sqlite3.connect(app.config.get("DATABASE_URI"))
+
+
